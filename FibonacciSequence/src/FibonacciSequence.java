@@ -1,9 +1,11 @@
+import java.math.BigInteger;
+
 public class FibonacciSequence {
 
-    static int fCount = 0;
-    static int timeStep = 0;
+    private static long fibViz(int n) {
+        int fCount = 0;
+        int timeStep = 0;
 
-    private static long fib(int n) {
         ++fCount; // Stack frame count.
         // Stack frame visualization.
         System.out.printf("t%03d |", ++timeStep); // Including a time step.
@@ -19,8 +21,8 @@ public class FibonacciSequence {
             --fCount;
             return 1;
         }
-        long fibPrev = fib(n - 1);
-        long fibPrevPrev = fib(n - 2);
+        long fibPrev = fibViz(n - 1);
+        long fibPrevPrev = fibViz(n - 2);
         long fibN = fibPrev + fibPrevPrev;
 
         System.out.printf("t%03d |", ++timeStep); // Including a time step.
@@ -29,17 +31,17 @@ public class FibonacciSequence {
         return fibN;
     }
 
-    private static long fibNoViz(int n) {
+    private static long fib(int n) {
         if (n == 0) {
             return 0;
         } if (n == 1) {
             return 1;
         }
-        long fibPrev = fibNoViz(n - 1);
-        long fibPrevPrev = fibNoViz(n - 2);
+        long fibPrev = fib(n - 1);
+        long fibPrevPrev = fib(n - 2);
         long fibN = fibPrev + fibPrevPrev;
 
-        return fibN;
+        return fibPrev + fibPrevPrev;
     }
 
     private static void runFib() {
@@ -48,8 +50,8 @@ public class FibonacciSequence {
         System.out.println("fib(" + n + "): " + fibN);
     }
 
-    private static void runFibMany() {
-        for (int i = 0; i <= 50; i++) {
+    private static void runFibMany(int n) {
+        for (int i = 0; i <= n; i++) {
             long startTime = System.nanoTime();
             long val = fib(i);
             long endTime = System.nanoTime();
@@ -57,51 +59,66 @@ public class FibonacciSequence {
         }
     }
 
-    private static long fibFast(int n, Long[] mem) {
-        // Top-Down Dynamic programming (memorization).
+    // Top-down dynamic programming (memorization).
+    private static BigInteger fibFast(int n, BigInteger[] mem) {
+        // If already computed, return the stored value
         if (mem[n] != null) {
             return mem[n];
         }
-        // First base case.
+
+        // Base cases
         if (n == 0) {
-            return 0;
+            return BigInteger.ZERO;
         }
-        // Second base case.
         if (n == 1) {
-            return 1;
+            return BigInteger.ONE;
         }
-        long fibPrev = fibNoViz(n - 1);
-        long fibPrevPrev = fibNoViz(n - 2);
-        long fibN = fibPrev + fibPrevPrev;
+
+        BigInteger fibPrev = fibFast(n - 1, mem);
+        BigInteger fibPrevPrev = fibFast(n - 2, mem);
+        BigInteger fibN = fibPrev.add(fibPrevPrev);
 
         mem[n] = fibN;
 
-        return mem[n];
+        return fibN;
     }
 
-    public static void runFastFibMany() {
-        for (int i = 0; i <= 50; i++) {
+    public static void runFibFastMany(int n) {
+        for (int i = 0; i <= n; i++) {
             long startTime = System.nanoTime();
             // long val = fibFast(i, new Long[i + 1]);
-            long val = fibFaster(i);
+            BigInteger val = fibFast(i, new BigInteger[i + 1]);
             long endTime = System.nanoTime();
             System.out.printf("fibFast(%d) = %d \t time: %fs\n", i, val, (endTime - startTime) / 1e9);
         }
     }
 
-    // Bottom-up dynamic programming (Table-filling)
-    public static long fibFaster (int n) {
-        long[] dp = new long[Math.max(2, n + 1)];
-        dp[0] = 0;
-        dp[1] = 1;
+    // Bottom-up dynamic programming (Table-filling).
+    public static BigInteger fibFaster(int n) {
+        BigInteger[] dp = new BigInteger[Math.max(2, n + 1)];
+        dp[0] = BigInteger.ZERO;
+        dp[1] = BigInteger.ONE;
+
         for (int i = 2; i <= n; i++) {
-            dp[i] = dp[i - 1] + dp[i - 2];
+            dp[i] = dp[i - 1].add(dp[i - 2]);
         }
         return dp[n];
     }
 
+    public static void runFibFasterMany(int n) {
+        for (int i = 0; i <= n; i++) {
+            long startTime = System.nanoTime();
+            BigInteger val = fibFaster(i);
+            long endTime = System.nanoTime();
+            System.out.printf("fibFaster(%d) = %s \t time: %fs\n", i, val, (endTime - startTime) / 1e9);
+        }
+    }
+
     public static void main(String[] args) {
-        runFastFibMany();
+        int n = 40;
+        runFibMany(n);
+        runFibFastMany(n);
+        runFibFasterMany(n);
     }
 
 }
