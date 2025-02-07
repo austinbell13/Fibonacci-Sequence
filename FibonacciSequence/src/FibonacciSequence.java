@@ -2,9 +2,10 @@ import java.math.BigInteger;
 
 public class FibonacciSequence {
 
+    static int fCount = 0;
+    static int timeStep = 0;
+
     private static long fibViz(int n) {
-        int fCount = 0;
-        int timeStep = 0;
 
         ++fCount; // Stack frame count.
         // Stack frame visualization.
@@ -84,13 +85,16 @@ public class FibonacciSequence {
     }
 
     public static void runFibFastMany(int n) {
+        double totalTimeFast;
+        long startTime = System.nanoTime();
         for (int i = 0; i <= n; i++) {
-            long startTime = System.nanoTime();
-            // long val = fibFast(i, new Long[i + 1]);
+            //long startTime = System.nanoTime();
             BigInteger val = fibFast(i, new BigInteger[i + 1]);
-            long endTime = System.nanoTime();
-            System.out.printf("fibFast(%d) = %d \t time: %fs\n", i, val, (endTime - startTime) / 1e9);
+            //long endTime = System.nanoTime();
+            //System.out.printf("fibFast(%d) = %d \t time: %fs\n", i, val, (endTime - startTime) / 1e9);
         }
+        long endTime = System.nanoTime();
+        System.out.printf("fibFast: %fs\n", ((endTime - startTime) / 1e9));
     }
 
     // Bottom-up dynamic programming (Table-filling).
@@ -106,17 +110,21 @@ public class FibonacciSequence {
     }
 
     public static void runFibFasterMany(int n) {
+        double totalTimeFaster;
+        long startTime = System.nanoTime();
         for (int i = 0; i <= n; i++) {
-            long startTime = System.nanoTime();
+            //long startTime = System.nanoTime();
             BigInteger val = fibFaster(i);
-            long endTime = System.nanoTime();
-            System.out.printf("fibFaster(%d) = %s \t time: %fs\n", i, val, (endTime - startTime) / 1e9);
+            //long endTime = System.nanoTime();
+            //System.out.printf("fibFaster(%d) = %s \t time: %fs\n");, i, val, (endTime - startTime) / 1e9);
         }
+        long endTime = System.nanoTime();
+        System.out.printf("fibFaster: %fs\n", ((endTime - startTime) / 1e9));
     }
 
     public static void main(String[] args) {
-        int n = 40;
-        runFibMany(n);
+        int n = 15000;
+        // runFibMany(n);
         runFibFastMany(n);
         runFibFasterMany(n);
     }
