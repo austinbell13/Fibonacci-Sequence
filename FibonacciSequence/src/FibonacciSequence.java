@@ -44,11 +44,14 @@ public class FibonacciSequence {
         return fibPrev + fibPrevPrev;
     }
 
-    private static void runFib() {
-        int n = 5;
-        long fibN = fib(n);
-        System.out.println("fib(" + n + "): " + fibN);
-    }
+
+    /**
+     * private static void runFib() {
+     *     int n = 5;
+     *     long fibN = fib(n);
+     *     System.out.println("fib(" + n + "): " + fibN);
+     * }
+     */
 
     private static void runFibMany(int n) {
         for (int i = 0; i <= n; i++) {
@@ -116,6 +119,7 @@ public class FibonacciSequence {
 
     public static void main(String[] args) {
         int n = 40;
+        fibViz(n);
         runFibMany(n);
         runFibFastMany(n);
         runFibFasterMany(n);
