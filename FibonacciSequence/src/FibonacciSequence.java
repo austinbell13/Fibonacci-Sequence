@@ -2,10 +2,10 @@ import java.math.BigInteger;
 
 public class FibonacciSequence {
 
-    private static long fibViz(int n) {
-        int fCount = 0;
-        int timeStep = 0;
+    static int fCount = 0;
+    static int timeStep = 0;
 
+    private static long fibViz(int n) {
         ++fCount; // Stack frame count.
         // Stack frame visualization.
         System.out.printf("t%03d |", ++timeStep); // Including a time step.
