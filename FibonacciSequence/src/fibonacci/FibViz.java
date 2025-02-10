@@ -1,46 +1,84 @@
 package fibonacci;
 
 import java.math.BigInteger;
+import org.knowm.xchart.*;
+
 import static fibonacci.FibonacciSequence.*;
 
 public class FibViz {
 
-    private static void runFib(int n) {
+
+    public static void main(String[] args) {
+        int n = 1000;
+        vizFibFastest(n);
+    }
+
+    private static void vizFib(int n) {
+        double[] fibTimes = new double[n + 1];
+        double[] fibN = new double[n + 1];
         for (int i = 0; i <= n; i++) {
             long startTime = System.nanoTime();
             long val = fib(i);
             long endTime = System.nanoTime();
-            System.out.printf("fib(%d) = %d \t time: %fs\n", i, val, (endTime - startTime) / 1e9);
+            double totalTime = (endTime - startTime) / 1e9;
+
+            fibTimes[i] = totalTime;
+            fibN[i] = i;
         }
+        XYChart chart = QuickChart.getChart("Time Complexity of fib(n)", "n", "Time", "time", fibN, fibTimes);
+        new SwingWrapper<>(chart).displayChart();
     }
 
-    public static void printFibFast(int n) {
+    public static void vizFibFast(int n) {
         BigInteger[] mem = setupMem(n);
+        double[] fibFastTimes = new double[n + 1];
+        double[] fibN = new double[n + 1];
 
         for (int i = 0; i <= n; i++) {
             long startTime = System.nanoTime();
             BigInteger val = fibFast(i, mem);
             long endTime = System.nanoTime();
-            System.out.printf("fibFast(%d) = %d \t time: %fs\n", i, val, (endTime - startTime) / 1e9);
+            double totalTime = (endTime - startTime) / 1e9;
+
+            fibFastTimes[i] = totalTime;
+            fibN[i] = i;
         }
+        XYChart chart = QuickChart.getChart("Time Complexity of fibFast(n)", "n", "Time", "time", fibN, fibFastTimes);
+        new SwingWrapper<>(chart).displayChart();
     }
 
-    public static void printFibFaster(int n) {
+    public static void vizFibFaster(int n) {
+        double[] fibFasterTimes = new double[n + 1];
+        double[] fibN = new double[n + 1];
+
         for (int i = 0; i <= n; i++) {
             long startTime = System.nanoTime();
             BigInteger val = fibFaster(i);
             long endTime = System.nanoTime();
-            System.out.printf("fibFaster(%d) = %s \t time: %fs\n", i, val, (endTime - startTime) / 1e9);
+            double totalTime = (endTime - startTime) / 1e9;
+
+            fibFasterTimes[i] = totalTime;
+            fibN[i] = i;
         }
+        XYChart chart = QuickChart.getChart("Time Complexity of fibFaster(n)", "n", "Time", "time", fibN, fibFasterTimes);
+        new SwingWrapper<>(chart).displayChart();
     }
 
-    public static void printFibFastest (int n) {
+    public static void vizFibFastest (int n) {
+        double[] fibFastestTimes = new double[n + 1];
+        double[] fibN = new double[n + 1];
+
         for (int i = 0; i <= n; i++) {
             long startTime = System.nanoTime();
             BigInteger val = fibFastest(i);
             long endTime = System.nanoTime();
-            System.out.printf("fibFaster(%d) = %s \t time: %fs\n", i, val, (endTime - startTime) / 1e9);
+            double totalTime = (endTime - startTime) / 1e9;
+
+            fibFastestTimes[i] = totalTime;
+            fibN[i] = i;
         }
+        XYChart chart = QuickChart.getChart("Time Complexity of fibFastest(n)", "n", "Time", "time", fibN, fibFastestTimes);
+        new SwingWrapper<>(chart).displayChart();
     }
 
     static int fCount = 0;
