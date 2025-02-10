@@ -47,7 +47,6 @@ public class FibonacciSequence {
         BigInteger[] mem = setupMem(n);
         for (int i = 0; i <= n; i++) {
             BigInteger val = fibFast(i, mem);
-            if (i == n) System.out.println(val);
         }
     }
 
@@ -67,7 +66,6 @@ public class FibonacciSequence {
     public static void runFibFaster(int n) {
         for (int i = 0; i <= n; i++) {
             BigInteger val = fibFaster(i);
-            if (i == n) System.out.println(val);
         }
     }
 
